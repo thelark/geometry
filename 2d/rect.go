@@ -4,27 +4,40 @@ package _d
  * 矩形
  */
 type Rect struct {
-	A *Point
-	B *Point
-	C *Point
-	D *Point
+	P [4]*Point
 }
 
 /**
  * 获取所有点
  */
 func (r *Rect) Points() []*Point {
-	return []*Point{r.A, r.B, r.C, r.D}
+	return []*Point{r.P[0], r.P[1], r.P[2], r.P[3]}
+}
+
+/**
+ * 获取所有边 顺序是从 [0] 开始
+ */
+func (r *Rect) Lines() []*Vector {
+	lines := make([]*Vector, 0)
+	for k, point := range r.Points() {
+		i := k + 1
+		if k == len(r.P)-1 {
+			i = 0
+		}
+		lines = append(lines, &Vector{point, r.P[i]})
+	}
+	return lines
 }
 
 /**
  * 计算周长
  */
 func (r *Rect) Perimeter() float64 {
-	return (&Vector{r.A, r.B}).Length() +
-		(&Vector{r.B, r.C}).Length() +
-		(&Vector{r.C, r.D}).Length() +
-		(&Vector{r.D, r.A}).Length()
+	perimeter := 0.0
+	for _, line := range r.Lines() {
+		perimeter += line.Length()
+	}
+	return perimeter
 }
 
 /**
@@ -35,5 +48,10 @@ func (r *Rect) Area() float64 {
 	 * 假设 A、B、C、D 四个点
 	 * S□ = S(ABC) + S(ACD)
 	 */
-	return (&Triangle{r.A, r.B, r.C}).Area() + (&Triangle{r.A, r.C, r.D}).Area()
+	s := 0.0
+	A := r.P[0]
+	for index := 1; index <= len(r.P)-1; index++ {
+		s += (&Delta{[3]*Point{A, r.P[index], r.P[index+1]}}).Area()
+	}
+	return s
 }

@@ -23,3 +23,10 @@ func (c *Circle) Perimeter() float64 {
 func (c *Circle) Area() float64 {
 	return math.Pi * math.Pow(c.R, 2)
 }
+
+/**
+ * 圆内包含某点
+ */
+func (c *Circle) ContainPoint(p *Point) bool {
+	return math.Sqrt(math.Pow(p.X-c.Center.X, 2)+math.Pow(p.Y-c.Center.Y, 2)) < c.R
+}
