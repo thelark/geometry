@@ -56,5 +56,18 @@ func (p *Polygon) Area() float64 {
  * 多边形包含某点
  */
 func (p *Polygon) ContainPoint(point *Point) bool {
-
+	j := len(p.P) - 1
+	containPoint := false
+	for index := 0; index < len(p.P); index++ {
+		if p.P[index].Y < point.Y && p.P[j].Y >= point.Y ||
+			p.P[j].Y < point.Y && p.P[index].Y >= point.Y {
+			if p.P[index].X + (point.Y - p.P[index].Y) /
+				(p.P[j].Y - p.P[index].Y) *
+				(p.P[j].X - p.P[index].X) < point.X {
+				containPoint = !containPoint
+			}
+		}
+		j = index
+	}
+	return containPoint
 }

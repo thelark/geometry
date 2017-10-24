@@ -50,3 +50,22 @@ func (d *Delta) Area() float64 {
 	 */
 	return 1 / 2 * (d.P[0].X*d.P[1].Y + d.P[1].X*d.P[2].Y + d.P[2].X*d.P[0].Y - d.P[0].X*d.P[2].Y - d.P[1].X*d.P[0].Y - d.P[2].X*d.P[1].Y)
 }
+/**
+ * 三角形包含某点
+ */
+func (d *Delta) ContainPoint(point *Point) bool {
+	j := len(d.P) - 1
+	containPoint := false
+	for index := 0; index < len(d.P); index++ {
+		if d.P[index].Y < point.Y && d.P[j].Y >= point.Y ||
+			d.P[j].Y < point.Y && d.P[index].Y >= point.Y {
+			if d.P[index].X + (point.Y - d.P[index].Y) /
+				(d.P[j].Y - d.P[index].Y) *
+				(d.P[j].X - d.P[index].X) < point.X {
+				containPoint = !containPoint
+			}
+		}
+		j = index
+	}
+	return containPoint
+}

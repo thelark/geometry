@@ -55,3 +55,22 @@ func (r *Rect) Area() float64 {
 	}
 	return s
 }
+/**
+ * 矩形包含某点
+ */
+func (r *Rect) ContainPoint(point *Point) bool {
+	j := len(r.P) - 1
+	containPoint := false
+	for index := 0; index < len(r.P); index++ {
+		if r.P[index].Y < point.Y && r.P[j].Y >= point.Y ||
+			r.P[j].Y < point.Y && r.P[index].Y >= point.Y {
+			if r.P[index].X + (point.Y - r.P[index].Y) /
+				(r.P[j].Y - r.P[index].Y) *
+				(r.P[j].X - r.P[index].X) < point.X {
+				containPoint = !containPoint
+			}
+		}
+		j = index
+	}
+	return containPoint
+}
