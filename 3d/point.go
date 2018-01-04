@@ -8,3 +8,5 @@ type Point struct {
 	Y float64 // Y
 	Z float64 // Z
 }
+
+var Origin = &Point{X: 0, Y: 0, Z: 0} // 原点
