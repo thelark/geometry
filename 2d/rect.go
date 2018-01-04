@@ -51,10 +51,11 @@ func (r *Rect) Area() float64 {
 	s := 0.0
 	A := r.P[0]
 	for index := 1; index <= len(r.P)-1; index++ {
-		s += (&Delta{[3]*Point{A, r.P[index], r.P[index+1]}}).Area()
+		s += (&Triangle{[3]*Point{A, r.P[index], r.P[index+1]}}).Area()
 	}
 	return s
 }
+
 /**
  * 矩形包含某点
  */
@@ -64,9 +65,9 @@ func (r *Rect) ContainPoint(point *Point) bool {
 	for index := 0; index < len(r.P); index++ {
 		if r.P[index].Y < point.Y && r.P[j].Y >= point.Y ||
 			r.P[j].Y < point.Y && r.P[index].Y >= point.Y {
-			if r.P[index].X + (point.Y - r.P[index].Y) /
-				(r.P[j].Y - r.P[index].Y) *
-				(r.P[j].X - r.P[index].X) < point.X {
+			if r.P[index].X+(point.Y-r.P[index].Y)/
+				(r.P[j].Y-r.P[index].Y)*
+				(r.P[j].X-r.P[index].X) < point.X {
 				containPoint = !containPoint
 			}
 		}

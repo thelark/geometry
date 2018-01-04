@@ -47,7 +47,7 @@ func (p *Polygon) Area() float64 {
 	s := 0.0
 	A := p.P[0]
 	for index := 1; index <= len(p.P)-1; index++ {
-		s += (&Delta{[3]*Point{A, p.P[index], p.P[index+1]}}).Area()
+		s += (&Triangle{[3]*Point{A, p.P[index], p.P[index+1]}}).Area()
 	}
 	return s
 }
@@ -61,9 +61,9 @@ func (p *Polygon) ContainPoint(point *Point) bool {
 	for index := 0; index < len(p.P); index++ {
 		if p.P[index].Y < point.Y && p.P[j].Y >= point.Y ||
 			p.P[j].Y < point.Y && p.P[index].Y >= point.Y {
-			if p.P[index].X + (point.Y - p.P[index].Y) /
-				(p.P[j].Y - p.P[index].Y) *
-				(p.P[j].X - p.P[index].X) < point.X {
+			if p.P[index].X+(point.Y-p.P[index].Y)/
+				(p.P[j].Y-p.P[index].Y)*
+				(p.P[j].X-p.P[index].X) < point.X {
 				containPoint = !containPoint
 			}
 		}
