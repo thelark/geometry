@@ -1,9 +1,8 @@
 package _d
 
 import (
-	"thelark.cn/geometry/angle"
+	"thelark.cn/geometry.v1/angle"
 	"math"
-	"fmt"
 )
 
 /**
@@ -61,14 +60,14 @@ func (d *Triangle) Area() float64 {
  * 三角形包含某点
  */
 func (d *Triangle) ContainPoint(point *Point) bool {
-	j := len(d.P) - 1
+	j := len(d.Points()) - 1
 	containPoint := false
-	for index := 0; index < len(d.P); index++ {
-		if d.P[index].Y < point.Y && d.P[j].Y >= point.Y ||
-			d.P[j].Y < point.Y && d.P[index].Y >= point.Y {
-			if d.P[index].X + (point.Y - d.P[index].Y) /
-				(d.P[j].Y - d.P[index].Y) *
-				(d.P[j].X - d.P[index].X) < point.X {
+	for index := 0; index < len(d.Points()); index++ {
+		if d.Points()[index].Y < point.Y && d.Points()[j].Y >= point.Y ||
+			d.Points()[j].Y < point.Y && d.Points()[index].Y >= point.Y {
+			if d.Points()[index].X + (point.Y - d.Points()[index].Y) /
+				(d.Points()[j].Y - d.Points()[index].Y) *
+				(d.Points()[j].X - d.Points()[index].X) < point.X {
 				containPoint = !containPoint
 			}
 		}
@@ -81,32 +80,24 @@ func (d *Triangle) ContainPoint(point *Point) bool {
  * 直角三角形
  * ∠α = ∠CAB
  * ∠β = ∠ACB
- * AB
+ * B 为直角
  */
 type RightTriangle struct {
 	Triangle
-	α, β   angle.Angle
-	AB, BC *Vector
+	α, β    angle.Angle // 另一个角是直角
+	A, B, C *Point
 }
 
 func (r *RightTriangle) Perimeter() float64 {
-	AC := math.Sqrt(math.Pow(r.AB.Length(), 2) + math.Pow(r.BC.Length(), 2))
-	return r.AB.Length() + r.BC.Length() + AC
+	AC := math.Sqrt(math.Pow((&Vector{r.A, r.B}).Length(), 2) + math.Pow((&Vector{r.B, r.C}).Length(), 2))
+	return (&Vector{r.A, r.B}).Length() + (&Vector{r.B, r.C}).Length() + AC
 }
 func (r *RightTriangle) Area() float64 {
-	return 1 / 2 * r.AB.Length() * r.BC.Length()
+	return 1 / 2 * (&Vector{r.A, r.B}).Length() * (&Vector{r.B, r.C}).Length()
 }
 
-func (r *RightTriangle) XX() {
-	AC := math.Sqrt(math.Pow(r.AB.Length(), 2) + math.Pow(r.BC.Length(), 2))
-	r.α = angle.Radian(math.Asin(r.BC.Length() / AC)).ToDegree()
-	fmt.Println(r.α)
-	r.β = angle.Radian(math.Asin(r.AB.Length() / AC)).ToDegree()
-	fmt.Println(r.β)
-	θ := 180 - r.α - r.β
-	fmt.Println(math.Sin(float64(r.β.ToRadian())))
-	fmt.Println(r.AB.Length(), AC*math.Sin(float64(r.β.ToRadian())))
-	fmt.Println(r.BC.Length(), AC*math.Sin(float64(r.α.ToRadian())))
-	fmt.Println(AC)
-	fmt.Println(θ)
+func (r *RightTriangle) Points() []*Point {
+	return []*Point{r.A, r.B, r.C}
 }
+
+

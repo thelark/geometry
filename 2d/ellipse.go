@@ -3,7 +3,7 @@ package _d
 import "math"
 
 /**
- * 椭圆
+ * Ellipse 椭圆
  */
 type Ellipse struct {
 	RadiusX      float64   // 长轴半径
@@ -26,7 +26,7 @@ func (e *Ellipse) Perimeter() float64 {
 }
 
 /**
- * 椭圆内包含某点
+ * ContainPoint 椭圆内包含某点
  */
 func (e *Ellipse) ContainPoint(p *Point) bool {
 	e.eccentricity = math.Sqrt(1 - math.Pow(e.RadiusY, 2)/math.Pow(e.RadiusX, 2))

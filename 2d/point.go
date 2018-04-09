@@ -1,5 +1,6 @@
 package _d
 
+// Origin 原点
 var Origin = &Point{X: 0, Y: 0}
 
 /**
@@ -18,7 +19,9 @@ const (
 	IsInRight                    // 在线右侧
 )
 
-// 判断点是否在向量左侧
+/**
+ * IsInVectorStatus 判断点在向量某侧
+ */
 func (p *Point) IsInVectorStatus(v *Vector) PointStatus {
 	r := (v.From.X-p.X)*(v.To.Y-p.Y) - (v.From.Y-p.Y)*(v.To.X-p.X)
 	if r > 0 {
@@ -30,7 +33,10 @@ func (p *Point) IsInVectorStatus(v *Vector) PointStatus {
 	}
 }
 
-// TODO: 判断点是否在形状内部
+/**
+ * IsInShape 判断点是否在形状内部
+ */
 func (p *Point) IsInShape(s Shape) bool {
 	return s.ContainPoint(p)
 }
+

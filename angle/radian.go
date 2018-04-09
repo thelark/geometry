@@ -11,8 +11,9 @@ import (
 type Radian float64
 
 const (
-	RightRadian    Radian = math.Pi / 2
-	StraightRadian Radian = math.Pi
+	RightRadian Radian = math.Pi / 2 //
+	FlatRadian  Radian = math.Pi
+	Fillet      Radian = math.Pi * 2
 )
 
 /**
