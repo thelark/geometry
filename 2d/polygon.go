@@ -1,5 +1,7 @@
 package _d
 
+import "math"
+
 /**
  * 多边形
  */
@@ -87,6 +89,19 @@ func (p *Polygon) Area() float64 {
 		s += (&Triangle{[3]*Point{A, p.P[index], p.P[index+1]}}).Area()
 	}
 	return s
+}
+/**
+ * 面积计算法 （较为准确）
+ */
+func (p *Polygon) _Area() float64 {
+	if len(p.P) < 3 {
+		return 0
+	}
+	s := p.P[0].Y * (p.P[len(p.P)-1].X - p.P[1].X)
+	for i := 1; i < len(p.P); i++ {
+		s += p.P[i].Y * (p.P[i-1].X - p.P[(i+1)%len(p.P)].X)
+	}
+	return math.Abs(s)
 }
 
 /**

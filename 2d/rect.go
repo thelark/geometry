@@ -7,6 +7,43 @@ type Rectangle struct {
 	P [4]*Point
 }
 
+func (r *Rectangle) Top() *Point {
+	p := r.P[0]
+	for _, v := range r.P {
+		if v.Y >= p.Y {
+			p = v
+		}
+	}
+	return p
+}
+func (r *Rectangle) Bottom() *Point {
+	p := r.P[0]
+	for _, v := range r.P {
+		if v.Y <= p.Y {
+			p = v
+		}
+	}
+	return p
+}
+func (r *Rectangle) Left() *Point {
+	p := r.P[0]
+	for _, v := range r.P {
+		if v.X <= p.X {
+			p = v
+		}
+	}
+	return p
+}
+func (r *Rectangle) Right() *Point {
+	p := r.P[0]
+	for _, v := range r.P {
+		if v.X >= p.X {
+			p = v
+		}
+	}
+	return p
+}
+
 /**
  * Points 获取所有点
  */
@@ -65,13 +102,39 @@ func (r *Rectangle) ContainPoint(point *Point) bool {
 	for index := 0; index < len(r.P); index++ {
 		if r.P[index].Y < point.Y && r.P[j].Y >= point.Y ||
 			r.P[j].Y < point.Y && r.P[index].Y >= point.Y {
-			if r.P[index].X+(point.Y-r.P[index].Y)/
-				(r.P[j].Y-r.P[index].Y)*
-				(r.P[j].X-r.P[index].X) < point.X {
+			if r.P[index].X + (point.Y - r.P[index].Y) /
+				(r.P[j].Y - r.P[index].Y) *
+				(r.P[j].X - r.P[index].X) < point.X {
 				containPoint = !containPoint
 			}
 		}
 		j = index
 	}
 	return containPoint
+}
+
+/**
+ * Split 矩形分割
+ * 分割后按从左到右，从下到上返回
+ */
+func (r *Rectangle) Split(splitCount int) []*Rectangle {
+	YSplit := r.Top().Y - r.Bottom().Y // Y轴分割距
+	XSplit := r.Right().X - r.Left().X // X轴分割距
+	XMin := r.Left().X
+	//XMax := r.Right().X
+	YMin := r.Bottom().Y
+	//YMax := r.Top().Y
+	rects := make([]*Rectangle, 0)
+	for i := 0; i < splitCount; i++ {
+		for j := 0; j < splitCount; j++ {
+			rect := &Rectangle{[4]*Point{
+				{XMin + float64(i)*XSplit, YMin + float64(j)*YSplit},
+				{XMin + float64(i)*XSplit, YMin + float64(j+1)*YSplit},
+				{XMin + float64(i+1)*XSplit, YMin + float64(j+1)*YSplit},
+				{XMin + float64(i+1)*XSplit, YMin + float64(j)*YSplit},
+			}}
+			rects = append(rects, rect)
+		}
+	}
+	return rects
 }

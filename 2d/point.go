@@ -39,4 +39,9 @@ func (p *Point) IsInVectorStatus(v *Vector) PointStatus {
 func (p *Point) IsInShape(s Shape) bool {
 	return s.ContainPoint(p)
 }
-
+func (p *Point) Add(t *Point) *Point {
+	return &Point{X: p.X + t.X, Y: p.Y + t.Y}
+}
+func (p *Point) Sub(t *Point) *Point {
+	return &Point{X: p.X - t.X, Y: p.Y - t.Y}
+}
